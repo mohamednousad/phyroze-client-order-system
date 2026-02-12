@@ -12,7 +12,7 @@ function doStuff(x, y) {
 }
 
 function GETDATAFROMAPI(){
-  console.log("fetching...")
+  console.log("fetching....")
 }
 
 console.log("total:", total_value_of_all_numbers_inside_the_application)
