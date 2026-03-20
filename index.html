@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Solutions Guide | Grow Your Business</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Mukta+Malar:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        tamil: ['Mukta Malar', 'sans-serif']
+                    },
+                    colors: { brand: { 50: '#f0f9ff', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-container { display: none; opacity: 0; transition: opacity 0.4s ease-in-out; }
+        .step-container.active { display: block; opacity: 1; }
+        .lang-ta { font-family: 'Mukta Malar', sans-serif !important; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <div class="absolute top-4 right-4 z-50">
+        <select id="lang-selector" onchange="switchLanguage(this.value)" class="bg-white border border-gray-300 rounded-lg p-2 text-sm shadow-sm outline-none focus:ring-2 focus:ring-brand-500">
+            <option value="en">English</option>
+            <option value="ta">தமிழ்</option>
+        </select>
+    </div>
+
+    <main class="w-full max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden relative mt-10 sm:mt-0">
+        <div class="h-1.5 w-full bg-gray-100">
+            <div id="progress-bar" class="h-1.5 bg-brand-500 transition-all duration-500 w-1/5"></div>
+        </div>
+
+        <div class="p-8 sm:p-12">
+            
+            <div id="step-1" class="step-container active text-center">
+                <i class="fa-solid fa-handshake text-4xl text-brand-500 mb-4 animate__animated animate__pulse animate__infinite"></i>
+                <h1 data-i18n="s1_title" class="text-3xl font-bold mb-2 text-gray-900">Let's grow your business.</h1>
+                <p data-i18n="s1_sub" class="text-gray-500 mb-8">To give you the best advice, how comfortable are you with technology?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="setAudience('non-tech')" class="p-6 border-2 border-gray-100 rounded-xl hover:border-brand-500 hover:bg-brand-50 transition-all text-left group">
+                        <i class="fa-solid fa-mug-hot text-2xl text-gray-400 group-hover:text-brand-500 mb-3 block"></i>
+                        <h3 data-i18n="s1_opt1_title" class="font-semibold text-lg text-gray-900">Business Focused</h3>
+                        <p data-i18n="s1_opt1_sub" class="text-sm text-gray-500 mt-1">Keep it simple. Show me results and how it grows my bottom line.</p>
+                    </button>
+                    <button onclick="setAudience('tech')" class="p-6 border-2 border-gray-100 rounded-xl hover:border-brand-500 hover:bg-brand-50 transition-all text-left group">
+                        <i class="fa-solid fa-code text-2xl text-gray-400 group-hover:text-brand-500 mb-3 block"></i>
+                        <h3 data-i18n="s1_opt2_title" class="font-semibold text-lg text-gray-900">Tech Savvy</h3>
+                        <p data-i18n="s1_opt2_sub" class="text-sm text-gray-500 mt-1">I know my stuff. Give me the technical specs and architecture details.</p>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-2" class="step-container">
+                <button onclick="goToStep(1)" class="text-sm text-gray-400 hover:text-gray-600 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Back</span>
+                </button>
+                <h2 data-i18n="s2_title" class="text-2xl font-bold mb-2 text-gray-900">Tell me about your project</h2>
+                <p id="step-2-subtitle" class="text-gray-500 mb-6"></p>
+
+                <div class="space-y-5">
+                    <div>
+                        <label data-i18n="s2_lbl1" class="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+                        <select id="biz-type" class="w-full border-gray-300 border rounded-lg p-3 outline-none focus:ring-2 focus:ring-brand-500">
+                            <option value="ecommerce" data-i18n="cat_ecom">E-Commerce / Retail</option>
+                            <option value="service" data-i18n="cat_serv">Service Based (Consulting, Agency)</option>
+                            <option value="local" data-i18n="cat_local">Local Brick & Mortar</option>
+                            <option value="startup" data-i18n="cat_start">Tech Startup / SaaS</option>
+                            <option value="realestate" data-i18n="cat_real">Real Estate / Properties</option>
+                            <option value="restaurant" data-i18n="cat_rest">Restaurant / Cafe</option>
+                            <option value="education" data-i18n="cat_edu">Education / Tutoring</option>
+                            <option value="health" data-i18n="cat_health">Healthcare / Clinic</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-i18n="s2_lbl2" class="block text-sm font-medium text-gray-700 mb-1">Estimated Budget</label>
+                        <select id="budget" class="w-full border-gray-300 border rounded-lg p-3 outline-none focus:ring-2 focus:ring-brand-500">
+                            <option value="starter" data-i18n="bud_1">Starter ($500 - $1,500)</option>
+                            <option value="growth" data-i18n="bud_2">Growth ($1,500 - $5,000)</option>
+                            <option value="enterprise" data-i18n="bud_3">Enterprise ($5,000+)</option>
+                        </select>
+                    </div>
+                    <button onclick="generateSolution()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 rounded-lg transition-colors mt-4">
+                        <span data-i18n="s2_btn">Find My Solution</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-3" class="step-container">
+                <button onclick="goToStep(2)" class="text-sm text-gray-400 hover:text-gray-600 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Back</span>
+                </button>
+                
+                <div class="text-center mb-6">
+                    <h2 data-i18n="s3_title" class="text-2xl font-bold text-gray-900 mb-2">See The Power of a Website</h2>
+                    <p data-i18n="s3_sub" class="text-gray-600 mb-4">Watch how transforming your digital presence brings happiness and growth!</p>
+                    
+                    <div class="aspect-w-16 aspect-h-9 mb-6 rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-black relative">
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/j1_f1tXo0jk?autoplay=0&mute=0&controls=1" title="Business Growth Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-64 object-cover"></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-brand-50 rounded-xl p-6 border border-brand-100 mb-6 text-center">
+                    <i id="solution-icon" class="fa-solid fa-rocket text-3xl text-brand-500 mb-2"></i>
+                    <h2 id="solution-title" class="text-xl font-bold text-gray-900 mb-2"></h2>
+                    <p id="solution-desc" class="text-sm text-gray-600 mb-4"></p>
+                    <ul id="solution-benefits" class="space-y-2 text-sm text-gray-700 text-left inline-block"></ul>
+                </div>
+
+                <button onclick="loadTemplates()" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition-colors">
+                    <span data-i18n="s3_btn">View Pre-built Templates</span> <i class="fa-solid fa-layer-group ml-2"></i>
+                </button>
+            </div>
+
+            <div id="step-4" class="step-container">
+                <button onclick="goToStep(3)" class="text-sm text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Back</span>
+                </button>
+                
+                <div class="text-center mb-4">
+                    <h2 data-i18n="s4_title" class="text-2xl font-bold text-gray-900 mb-2">Your Starting Templates</h2>
+                    <p data-i18n="s4_sub" class="text-gray-600 text-sm">Based on your business type, here is a live preview of what we can build.</p>
+                </div>
+
+                <div class="w-full h-72 border-2 border-gray-200 rounded-xl overflow-hidden mb-6 relative bg-gray-100">
+                    <iframe id="template-frame" class="w-full h-full" srcdoc="<div style='font-family:sans-serif; text-align:center; padding-top:20%; color:#666;'>Loading template preview...</div>"></iframe>
+                </div>
+
+                <button onclick="goToStep(5)" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 rounded-lg transition-colors">
+                    <span data-i18n="s4_btn">I Love This, Let's Connect!</span> <i class="fa-solid fa-heart ml-2"></i>
+                </button>
+            </div>
+
+            <div id="step-5" class="step-container text-center">
+                <button onclick="goToStep(4)" class="text-sm text-gray-400 hover:text-gray-600 mb-6 flex items-center gap-2 justify-start w-full">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Back</span>
+                </button>
+                
+                <h2 data-i18n="s5_title" class="text-2xl font-bold text-gray-900 mb-2">Let's make it happen.</h2>
+                <p data-i18n="s5_sub" class="text-gray-500 mb-6">Enter your details and choose how you'd like to connect.</p>
+
+                <div class="space-y-4 text-left">
+                    <div>
+                        <input type="text" id="contact-name" data-placeholder="s5_name" placeholder="Your Name" class="w-full border-gray-300 border rounded-lg p-3 outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <input type="email" id="contact-email" data-placeholder="s5_email" placeholder="Your Email" class="w-full border-gray-300 border rounded-lg p-3 outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                        <button onclick="submitLead('whatsapp')" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1da851] text-white font-semibold py-3 rounded-lg transition-colors shadow-lg">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> <span data-i18n="btn_wa">WhatsApp</span>
+                        </button>
+                        <button onclick="submitLead('linkedin')" class="flex items-center justify-center gap-2 bg-[#0A66C2] hover:bg-[#084e96] text-white font-semibold py-3 rounded-lg transition-colors shadow-lg">
+                            <i class="fa-brands fa-linkedin text-xl"></i> <span data-i18n="btn_in">LinkedIn</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const state = { audience: null, bizType: null, budget: null, currentLang: 'en' };
+
+        const i18n = {
+            en: {
+                back: "Back",
+                s1_title: "Let's grow your business.",
+                s1_sub: "To give you the best advice, how comfortable are you with technology?",
+                s1_opt1_title: "Business Focused",
+                s1_opt1_sub: "Keep it simple. Show me results and how it grows my bottom line.",
+                s1_opt2_title: "Tech Savvy",
+                s1_opt2_sub: "I know my stuff. Give me the technical specs and architecture details.",
+                s2_title: "Tell me about your project",
+                s2_sub_nontech: "Don't worry about the tech terms. Just tell me your goals.",
+                s2_sub_tech: "Let's align your stack and scalability requirements.",
+                s2_lbl1: "Business Type",
+                cat_ecom: "E-Commerce / Retail",
+                cat_serv: "Service Based (Consulting, Agency)",
+                cat_local: "Local Brick & Mortar",
+                cat_start: "Tech Startup / SaaS",
+                cat_real: "Real Estate / Properties",
+                cat_rest: "Restaurant / Cafe",
+                cat_edu: "Education / Tutoring",
+                cat_health: "Healthcare / Clinic",
+                s2_lbl2: "Estimated Budget",
+                bud_1: "Starter ($500 - $1,500)",
+                bud_2: "Growth ($1,500 - $5,000)",
+                bud_3: "Enterprise ($5,000+)",
+                s2_btn: "Find My Solution",
+                s3_title: "See The Power of a Website",
+                s3_sub: "Watch how transforming your digital presence brings happiness and growth!",
+                s3_btn: "View Pre-built Templates",
+                s4_title: "Your Starting Templates",
+                s4_sub: "Based on your business type, here is a live preview of what we can build.",
+                s4_btn: "I Love This, Let's Connect!",
+                s5_title: "Let's make it happen.",
+                s5_sub: "Enter your details and choose how you'd like to connect.",
+                s5_name: "Your Name",
+                s5_email: "Your Email",
+                btn_wa: "WhatsApp",
+                btn_in: "LinkedIn",
+                sol_ecom: "E-Commerce Conversion Engine",
+                sol_local: "Local SEO & Footfall Booster",
+                sol_gen: "Lead Generation Machine"
+            },
+            ta: {
+                back: "பின்செல்",
+                s1_title: "உங்கள் வணிகத்தை வளர்ப்போம்.",
+                s1_sub: "சிறந்த ஆலோசனையை வழங்க, தொழில்நுட்பத்தில் நீங்கள் எவ்வளவு வசதியாக உள்ளீர்கள்?",
+                s1_opt1_title: "வணிக நோக்கம்",
+                s1_opt1_sub: "எளிமையாக இருக்கட்டும். லாபத்தை எப்படி அதிகரிப்பது என காட்டுங்கள்.",
+                s1_opt2_title: "தொழில்நுட்ப அறிவு",
+                s1_opt2_sub: "எனக்கு தொழில்நுட்பம் தெரியும். தொழில்நுட்ப விவரங்களை கொடுங்கள்.",
+                s2_title: "உங்கள் திட்டத்தைப் பற்றி சொல்லுங்கள்",
+                s2_sub_nontech: "தொழில்நுட்ப சொற்களைப் பற்றி கவலைப்பட வேண்டாம். உங்கள் இலக்குகளை கூறுங்கள்.",
+                s2_sub_tech: "உங்கள் தொழில்நுட்ப தேவைகளை அமைப்போம்.",
+                s2_lbl1: "வணிக வகை",
+                cat_ecom: "மின்-வணிகம் / சில்லறை",
+                cat_serv: "சேவை அடிப்படை (ஆலோசனை)",
+                cat_local: "உள்ளூர் வணிகம்",
+                cat_start: "ஸ்டார்ட்அப் / சாஸ்",
+                cat_real: "ரியல் எஸ்டேட் / சொத்துக்கள்",
+                cat_rest: "உணவகம் / கஃபே",
+                cat_edu: "கல்வி / பயிற்சி",
+                cat_health: "சுகாதாரம் / கிளினிக்",
+                s2_lbl2: "மதிப்பிடப்பட்ட பட்ஜெட்",
+                bud_1: "ஆரம்பம் ($500 - $1,500)",
+                bud_2: "வளர்ச்சி ($1,500 - $5,000)",
+                bud_3: "நிறுவனம் ($5,000+)",
+                s2_btn: "எனது தீர்வை கண்டுபிடி",
+                s3_title: "இணையதளத்தின் சக்தியைப் பாருங்கள்",
+                s3_sub: "டிஜிட்டல் மாற்றம் எவ்வாறு மகிழ்ச்சியையும் வளர்ச்சியையும் தருகிறது என்பதைப் பாருங்கள்!",
+                s3_btn: "மாதிரி வடிவங்களை காண்க",
+                s4_title: "உங்கள் மாதிரி வடிவங்கள்",
+                s4_sub: "உங்கள் வணிக வகையின் அடிப்படையில், நாங்கள் உருவாக்கக்கூடியவற்றின் முன்னோட்டம் இங்கே.",
+                s4_btn: "இது அருமை, தொடர்புகொள்வோம்!",
+                s5_title: "இதை சாத்தியமாக்குவோம்.",
+                s5_sub: "உங்கள் விவரங்களை உள்ளிட்டு, எவ்வாறு இணைக்க விரும்புகிறீர்கள் என்பதைத் தேர்வுசெய்க.",
+                s5_name: "உங்கள் பெயர்",
+                s5_email: "உங்கள் மின்னஞ்சல்",
+                btn_wa: "வாட்ஸ்அப்",
+                btn_in: "லிங்க்ட்இன்",
+                sol_ecom: "மின்-வணிக விற்பனை இயந்திரம்",
+                sol_local: "உள்ளூர் SEO & வாடிக்கையாளர் பெருக்கி",
+                sol_gen: "முன்னணி உருவாக்கும் இயந்திரம்"
+            }
+        };
+
+        function switchLanguage(lang) {
+            state.currentLang = lang;
+            if(lang === 'ta') {
+                document.body.classList.add('lang-ta');
+            } else {
+                document.body.classList.remove('lang-ta');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(i18n[lang][key]) {
+                    if(el.tagName === 'OPTION') {
+                        el.innerText = i18n[lang][key];
+                    } else {
+                        el.innerHTML = i18n[lang][key];
+                    }
+                }
+            });
+
+            document.querySelectorAll('[data-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-placeholder');
+                if(i18n[lang][key]) {
+                    el.setAttribute('placeholder', i18n[lang][key]);
+                }
+            });
+
+            const subtitle = document.getElementById('step-2-subtitle');
+            if(state.audience === 'non-tech') subtitle.innerText = i18n[lang].s2_sub_nontech;
+            if(state.audience === 'tech') subtitle.innerText = i18n[lang].s2_sub_tech;
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step-container').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => el.style.display = 'none', 400);
+            });
+
+            setTimeout(() => {
+                const target = document.getElementById(`step-${step}`);
+                target.style.display = 'block';
+                void target.offsetWidth;
+                target.classList.add('active');
+                document.getElementById('progress-bar').style.width = `${step * 20}%`;
+                
+                if(step === 4) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }, 400);
+        }
+
+        function setAudience(type) {
+            state.audience = type;
+            const subtitle = document.getElementById('step-2-subtitle');
+            subtitle.innerText = i18n[state.currentLang][type === 'non-tech' ? 's2_sub_nontech' : 's2_sub_tech'];
+            goToStep(2);
+        }
+
+        function generateSolution() {
+            state.bizType = document.getElementById('biz-type').value;
+            state.budget = document.getElementById('budget').value;
+            
+            const titleEl = document.getElementById('solution-title');
+            const listEl = document.getElementById('solution-benefits');
+            listEl.innerHTML = ''; 
+
+            if(state.bizType === 'ecommerce' || state.bizType === 'restaurant') {
+                titleEl.innerText = i18n[state.currentLang].sol_ecom;
+                listEl.innerHTML = `
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Online ordering & inventory</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Secure payment gateways</li>
+                `;
+            } else if (state.bizType === 'local' || state.bizType === 'health') {
+                titleEl.innerText = i18n[state.currentLang].sol_local;
+                listEl.innerHTML = `
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Google Maps integration</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Easy appointment booking</li>
+                `;
+            } else {
+                titleEl.innerText = i18n[state.currentLang].sol_gen;
+                listEl.innerHTML = `
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> High-converting landing pages</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> CRM & Email automation</li>
+                `;
+            }
+            goToStep(3);
+        }
+
+        function loadTemplates() {
+            const frame = document.getElementById('template-frame');
+            let templateHTML = "";
+
+            if (state.bizType === 'ecommerce') {
+                templateHTML = `
+                    <div style="font-family:sans-serif; background:#f9fafb; min-height:100vh;">
+                        <div style="background:#111827; color:white; padding:20px; text-align:center; font-size:24px; font-weight:bold;">PREMIUM STORE</div>
+                        <div style="padding:20px; text-align:center;">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" style="width:100%; max-width:400px; border-radius:10px; margin-bottom:10px;">
+                            <h2 style="margin:0;">Smart Watch Pro</h2>
+                            <p style="color:#2563eb; font-weight:bold; font-size:20px;">$299.00</p>
+                            <button style="background:#2563eb; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">Add to Cart</button>
+                        </div>
+                    </div>`;
+            } else if (state.bizType === 'restaurant') {
+                templateHTML = `
+                    <div style="font-family:sans-serif; background:#fff7ed; min-height:100vh;">
+                        <div style="background:#c2410c; color:white; padding:20px; text-align:center; font-size:24px; font-weight:bold;">THE GRAND CAFE</div>
+                        <div style="padding:20px; text-align:center;">
+                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80" style="width:100%; max-width:400px; border-radius:10px; margin-bottom:10px;">
+                            <h2 style="margin:0; color:#9a3412;">Classic Burger</h2>
+                            <p style="color:#6b7280;">Juicy beef with artisan buns</p>
+                            <button style="background:#c2410c; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">Order Now</button>
+                        </div>
+                    </div>`;
+            } else if (state.bizType === 'realestate') {
+                templateHTML = `
+                    <div style="font-family:sans-serif; background:#f0fdf4; min-height:100vh;">
+                        <div style="background:#15803d; color:white; padding:20px; text-align:center; font-size:24px; font-weight:bold;">ELITE HOMES</div>
+                        <div style="padding:20px; text-align:center;">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&q=80" style="width:100%; max-width:400px; border-radius:10px; margin-bottom:10px;">
+                            <h2 style="margin:0; color:#166534;">Luxury Villa</h2>
+                            <p style="color:#15803d; font-weight:bold; font-size:20px;">$1.2M</p>
+                            <button style="background:#15803d; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">Schedule Viewing</button>
+                        </div>
+                    </div>`;
+            } else {
+                templateHTML = `
+                    <div style="font-family:sans-serif; background:#f8fafc; min-height:100vh;">
+                        <div style="background:#0f172a; color:white; padding:20px; text-align:center; font-size:24px; font-weight:bold;">PRO SERVICES</div>
+                        <div style="padding:40px 20px; text-align:center;">
+                            <h1 style="color:#0f172a; font-size:32px; margin-bottom:10px;">Grow Your Business Faster</h1>
+                            <p style="color:#475569; margin-bottom:20px;">Expert consulting tailored to your specific needs.</p>
+                            <button style="background:#3b82f6; color:white; padding:15px 30px; border:none; border-radius:5px; font-size:16px; cursor:pointer;">Book a Consultation</button>
+                        </div>
+                    </div>`;
+            }
+            
+            frame.srcdoc = templateHTML;
+            goToStep(4);
+        }
+
+        function submitLead(platform) {
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+
+            if(!name || !email) {
+                alert(state.currentLang === 'ta' ? "தயவுசெய்து உங்கள் பெயர் மற்றும் மின்னஞ்சலை உள்ளிடவும்!" : "Please enter your name and email!");
+                return;
+            }
+
+            const bizText = document.getElementById('biz-type').options[document.getElementById('biz-type').selectedIndex].text;
+            let message = `Hi! I'm ${name} (${email}). I'm interested in building a website for my ${bizText} business.`;
+
+            if(platform === 'whatsapp') {
+                const waNumber = "947712445678"; 
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            } else if (platform === 'linkedin') {
+                window.open(`https://www.linkedin.com/company/google/`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
